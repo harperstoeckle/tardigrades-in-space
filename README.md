@@ -1,6 +1,6 @@
 # Tardigrades in Space
 This game uses an extremely basic terminal-based 3D software renderer. It was
-originally created for the IB group 4 project.
+originally created for the IB group 4 project in 2018.
 
 ## Building
 Currently, this only works on Windows and requires curses. At the time that I
