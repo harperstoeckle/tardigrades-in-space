@@ -7,9 +7,7 @@
 #include <cmath>
 #include <utility>
 
-#include <windows.h>	//for GetKeyState(), which is not portable really
-#undef MOUSE_MOVED
-
+#include "input.hpp"
 #include "shapes.hpp"
 #include "transform.hpp"
 
@@ -163,13 +161,6 @@ void swap_and_pop(std::vector<T>& vec, std::size_t index)
 	vec.pop_back();
 }
 
-//check if a given key is being pressed currently
-inline bool is_pressed(int key)
-{
-	//get the correct bit
-	return GetKeyState(key) & 0x8000;
-}
-
 //this manages all of the stuff in the game
 struct game_manager
 {
@@ -188,7 +179,7 @@ struct game_manager
 	//stores an key-type pair, so that a key is mapped to an input_type
 	struct map_input
 	{
-		int input_key;
+		KeyboardKey input_key;
 		input_type input;
 	};
 	
@@ -196,7 +187,7 @@ struct game_manager
 	input_type input = NONE;
 	
 	//pushes a new key combination. this is chainable
-	game_manager& add_key(int input_key, input_type input)
+	game_manager& add_key(KeyboardKey input_key, input_type input)
 	{
 		keys_.push_back({input_key, input});
 		return *this;
@@ -208,7 +199,7 @@ struct game_manager
 		for(auto key : keys_)
 		{
 			//finds the first valid key and sets it
-			if(is_pressed(key.input_key))
+			if(keyboard_context_.is_key_pressed(key.input_key))
 			{
 				input = key.input;
 				return;
@@ -380,6 +371,9 @@ struct game_manager
 private:
 	//holds all key maps
 	std::vector<map_input> keys_;
+
+	//allow querying the keyboard state
+	KeyboardContext keyboard_context_;
 	
 	//these are used to generate random numbers within the view area
 	std::mt19937 random_generator_;

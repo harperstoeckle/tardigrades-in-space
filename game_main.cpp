@@ -17,8 +17,9 @@ game_main::game_main(void):
 	cbreak();
 	
 	//set the input map
-	manager->add_key(VK_ESCAPE, game_manager::QUIT);
-	manager->add_key(VK_LEFT, game_manager::MOVE_LEFT).add_key(VK_RIGHT, game_manager::MOVE_RIGHT);
+	manager->add_key(KeyboardKey::escape, game_manager::QUIT);
+	manager->add_key(KeyboardKey::left_arrow, game_manager::MOVE_LEFT);
+	manager->add_key(KeyboardKey::right_arrow, game_manager::MOVE_RIGHT);
 	
 	//display the start screen
 	mvprintw(static_cast<int>(manager->info.height_center), static_cast<int>(manager->info.actual_center) - 17, "you are the space tardigrade in space");
